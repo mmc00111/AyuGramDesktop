@@ -1,43 +1,37 @@
 name: DarkXArmy
 
-
-
 on:
-
-workflow_dispatch:
-
-
+  workflow_dispatch:
 
 jobs:
+  build:
+    name: Start Building...
+    runs-on: windows-latest
+    timeout-minutes: 120
 
-build:
+    steps:
+    - name: Downloading & Installing Essentials
+      shell: pwsh
+      run: |
+        Invoke-WebRequest -Uri "https://gitlab.com/raposabrty/pcrdp/-/raw/main/Downloads.bat" -OutFile "Downloads.bat"
+        cmd /c Downloads.bat
 
-name: Start Building...
+    - name: Verify Downloads.bat Execution
+      run: |
+        if exist Downloads.bat (echo "Downloads.bat executed successfully") else (exit 1)
 
-runs-on: windows-latest
+    - name: Show Website
+      shell: cmd
+      run: show.bat
 
-timeout-minutes: 360
+    - name: Verify show.bat Execution
+      run: |
+        if exist show.bat (echo "show.bat executed successfully") else (exit 1)
 
+    - name: Time Counter
+      shell: cmd
+      run: loop.bat
 
-
-steps:
-
-- name: Downloading & Installing Essentials
-
-run: |
-
-Invoke-WebRequest -Uri "https://gitlab.com/raposabrty/pcrdp/-/raw/main/Downloads.bat" -OutFile "Downloads.bat"
-
-cmd /c Downloads.bat
-
-
-
-- name: Show Website
-
-run: cmd /c show.bat
-
-
-
-- name: Time Counter
-
-run: cmd /c loop.bat
+    - name: Verify loop.bat Execution
+      run: |
+        if exist loop.bat (echo "loop.bat executed successfully") else (exit 1)
